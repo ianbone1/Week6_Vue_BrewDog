@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Brew Dog</title>
+	<script src="./js/bundle.js"></script>
+	<link rel="stylesheet" type="text/css" media="screen" href="./styles/styles.css" />
+</head>
+<body>
+
+	<h1>Brewdog App</h1>
+
+	<div id="app">
+		<label for="beerSelector">Select Beer</label>
+		<select id="beerSelector" v-model="selectedBeerIndex" v-on:change="selectBeer">
+			<option disabled value=''>Select a Beer</option>
+			<option v-for="(beer, index) in beers" :value="index">{{ beer.name }}</option>
+		</select>
+
+		<div id="beerDetails" v-if="selectedBeerIndex !== null">
+			<h2>{{ selectedBeer.name }} ABV:{{selectedBeer.abv}}</h2>
+			<img class="beerImage":src="selectedBeer.image_url" alt="Beer Image" width="50px" height="200px">
+			<p class="description">{{ selectedBeer.description }}</p>
+
+			<table>
+				<caption>Malt</caption>
+				<tr>
+					<th>Name</th>
+					<th>Quantity</th>
+				</tr>
+				<tr v-for="malt in selectedBeer.ingredients.malt">
+					<td>{{ malt.name }}</td>
+					<td>{{ malt.amount.value }}{{ malt.amount.unit }}</td>
+				</tr>
+			</table>
+			<table>
+				<caption>Hops</caption>
+				<tr>
+					<th>Name</th>
+					<th>Quantity</th>
+					<th>When</th>
+					<th>Taste</th>
+				</tr>
+				<tr v-for= "hops in selectedBeer.ingredients.hops">
+					<td>{{ hops.name }}</td>
+					<td>{{ hops.amount.value }}{{ hops.amount.unit }}</td>
+					<td>{{ hops.add }}</td>
+					<td>{{ hops.attribute}}</td>
+				</tr>
+			</table>
+		</div>
+
+		<button v-if="selectedBeerIndex !== null" v-on:click="addToFavourites">Add to Favourites</button>
+		<h3 v-if="selectedBeerIndex !== null" >Favourites</h3>
+		<ul>
+			<div v-for="(beer, index) in favouriteBeers">
+				<li><button v-on:click="deleteFavourite(index)">Delete</button>
+					{{ beer.name }} ABV: {{ beer.abv }}</li>
+			</div>
+		</ul>
+	</div>
+</body>
+</html>
