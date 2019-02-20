@@ -4,23 +4,28 @@
 	<title>Brew Dog</title>
 	<script src="./js/bundle.js"></script>
 	<link rel="stylesheet" type="text/css" media="screen" href="./styles/styles.css" />
+	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 </head>
 <body>
 
-	<h1>Brewdog App</h1>
-
 	<div id="app">
-		<label for="beerSelector">Select Beer</label>
-		<select id="beerSelector" v-model="selectedBeerIndex" v-on:change="selectBeer">
-			<option disabled value=''>Select a Beer</option>
-			<option v-for="(beer, index) in beers" :value="index">{{ beer.name }}</option>
-		</select>
+		<h1>Brewdog App</h1>
+		<div class="selectorWrapper">
+			<label class="selectorLabel" for="beerSelector">Select Beer</label>
+			<select id="beerSelector" v-model="selectedBeerIndex" v-on:change="selectBeer">
+				<option disabled value=''>Select a Beer</option>
+				<option v-for="(beer, index) in beers" :value="index">{{ beer.name }}</option>
+			</select>
+		</div>
 
-		<div id="beerDetails" v-if="selectedBeerIndex !== null">
+	 	<div id="beerDetailsWrapper" v-if="selectedBeerIndex !== null">
 			<h2>{{ selectedBeer.name }} ABV:{{selectedBeer.abv}}</h2>
-			<img class="beerImage":src="selectedBeer.image_url" alt="Beer Image" width="50px" height="200px">
-			<p class="description">{{ selectedBeer.description }}</p>
-
+			<div class="detailsWrapper">
+				<img class="beerImage":src="selectedBeer.image_url" alt="Beer Image" width="50px" height="200px">
+				<p class="description">{{ selectedBeer.description }}</p>
+			</div>
+		</div>
+		<div id="tableWrapper" v-if="selectedBeerIndex !== null">
 			<table>
 				<caption>Malt</caption>
 				<tr>
@@ -48,15 +53,16 @@
 				</tr>
 			</table>
 		</div>
-
-		<button v-if="selectedBeerIndex !== null" v-on:click="addToFavourites">Add to Favourites</button>
+		<div class="button">
+			<button v-if="selectedBeerIndex !== null" v-on:click="addToFavourites">Add to Favourites</button>
+	</div>
 		<h3 v-if="selectedBeerIndex !== null" >Favourites</h3>
 		<ul>
 			<div v-for="(beer, index) in favouriteBeers">
 				<li><button v-on:click="deleteFavourite(index)">Delete</button>
 					{{ beer.name }} ABV: {{ beer.abv }}</li>
-			</div>
-		</ul>
-	</div>
-</body>
-</html>
+				</div>
+			</ul>
+		</div>
+	</body>
+	</html>
